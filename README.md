@@ -10,4 +10,5 @@
 
     npm run dev
 
-![ScreenShot](https://{monosnap.com/file/Agwfe08tYVdhSHYok8FSVAU81jouCE})
+![react gauge 2015-09-04 16-24-47](https://cloud.githubusercontent.com/assets/2760408/9684649/8e50a5d4-5321-11e5-8e0f-9e193259903c.jpg)
+
