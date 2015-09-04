@@ -1,16 +1,300 @@
 <!doctype html>
 <html>
-	<head>
-		<title>React Gauge Speedometer</title>
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/babel/5.5.6/browser.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
-		<script type="text/javascript">
-			// Manually bundling so override require and module
-			window.require = function() { return window.React; };
-			window.module = {};
-		</script>
-	</head>
-	<body>
-		React Gauge Speedometer
-	</body>
+<head>
+    <title>Gauge Speedometer</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/babel/5.5.6/browser.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script type="text/javascript">
+        // Manually bundling so override require and module
+        window.require = function() { return window.React; };
+        window.module = {};
+    </script>
+    <link href="https://rawgit.com/Entali/react-gauge-speedometer/gh-pages/app.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="example" className="container"></div>
+
+<script type="text/babel">
+    let ExampleApp = React.createClass({
+        getInitialState() {
+            return {
+                speedTest: false
+            }
+        },
+
+        runSpeedTest() {
+            this.setState({
+                speedTest: true
+            })
+        },
+
+        render() {
+            return (
+                <section className="App">
+                    <h1 className="App__title">&lt;React gauges (speedometers) /&gt;</h1>
+
+                    <div className="App__content">
+                        <div className="box">
+                             <ExampleGauge value={15}
+                                    size={20}
+                                    radius={100}
+                                    sections={["#8cc152", "#ffb74d", "#e84528"]}
+                                    arrow={{height: 65, width: 8, color: "#ccc"}}
+                                    label="15%"/>
+                        </div>
+
+                        <div className="box">
+                             <ExampleGauge value={50}
+                                    size={20}
+                                    radius={100}
+                                    sections={["#d2bde4", "#8d65b6", "#bd4fc4", "#761068"]}
+                                    arrow={{height: 65, width: 8, color: "#515151"}}
+                                    label="50%"/>
+                        </div>
+
+                        <div className="box">
+                             <ExampleGauge value={85}
+                                    size={20}
+                                    radius={100}
+                                    sections={["#3bc720", "#fdfa1f", "#feaa37", "#f8824f", "#e03e27"]}
+                                    arrow={{height: 65, width: 8, color: "#000"}}
+                                    label="85%"/>
+                        </div>
+                    </div>
+
+                     <button onClick={this.runSpeedTest}>Run speed tests</button>
+                </section>
+            );
+        }
+    })
+
+    let ExampleGauge = React.createClass({
+        getDefaultProps() {
+            return {
+                value: 0,
+                size: 15,
+                radius: 85,
+                sections: ['#ccc', '#999', '#444'],
+                arrow: null,
+                label: null
+            }
+        },
+
+        propTypes: {
+            value: React.PropTypes.number.isRequired,
+            sections: React.PropTypes.any,
+            size: React.PropTypes.number,
+            radius: React.PropTypes.number,
+            arrow: React.PropTypes.object,
+            label: React.PropTypes.string
+        },
+
+        getInitialState() {
+            return {
+                width: 212
+            }
+        },
+
+        render() {
+            let cls = 'gauge';
+            return (
+                <section className={cls}>
+                    <ExampleArcGauge value={this.props.value}
+                                    size={this.props.size}
+                                    radius={this.props.radius}
+                                    sections={this.props.sections}
+                                    arrow={this.props.arrow}
+                                    label={this.props.label}
+                                    width={this.state.width}/>
+                </section>
+            );
+        }
+    })
+
+    let ExampleArcGauge = React.createClass({
+        getDefaultProps() {
+            return {
+                width: '100%'
+            }
+        },
+
+        propTypes: {
+            value: React.PropTypes.number.isRequired,
+            width: React.PropTypes.number,
+            size: React.PropTypes.number,
+            radius: React.PropTypes.number,
+            sections: React.PropTypes.any,
+            arrow: React.PropTypes.object,
+            label: React.PropTypes.string
+        },
+
+        getInitialState() {
+            return {
+                arrow: {
+                    height: 55,
+                    width: 5,
+                    color: '#a5a5a5'
+                }
+            }
+        },
+
+        componentDidMount() {
+            return this.renderArcGauge();
+        },
+
+        componentDidUpdate() {
+            return this.renderArcGauge();
+        },
+
+        render() {
+            return <div className="gauge-el"></div>;
+        },
+
+        renderArcGauge() {
+            const el = React.findDOMNode(this);
+            const {value, width} = this.props;
+            const height = width / 2;
+
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+
+            // Values: provided styles || default styles
+            let radius = this.props.radius,
+                    sections = this.props.sections,
+                    sectionsNum = this.props.sections.length,
+                    sectionWidth = this.props.size,
+                    rotateAngle = .75,
+                    sectionFill = 1 / sectionsNum / 2,
+                    sectionSpaces = 0.08,
+                    arrow = this.props.arrow || this.state.arrow,
+                    arcStart, arcEnd, padStart, padEnd;
+
+            // Draw svg
+            let arc = d3.svg.arc()
+                    .startAngle(this._deg2rad(-80))
+                    .endAngle(this._deg2rad(80))
+                    .outerRadius(height);
+
+            let svg = d3.select(el).append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr("transform", "translate(" + width / 2 + "," + height + ")");
+
+            var meter = svg.append("g")
+                    .attr("class", "progress-meter");
+
+            // Generate path
+            sections.map((section, sectionIndex) => {
+                arcStart = this._percToRad(rotateAngle);
+                arcEnd = arcStart + this._percToRad(sectionFill);
+                rotateAngle += sectionFill;
+                padStart = 0 ? 0 : sectionSpaces / 2;
+                padEnd = sectionsNum ? 0 : sectionSpaces / 2;
+
+                arc = d3.svg.arc()
+                        .outerRadius(radius)
+                        .innerRadius(radius - sectionWidth)
+                        .startAngle(arcStart + padStart)
+                        .endAngle(arcEnd - padEnd);
+
+                meter.append("path")
+                        .attr("d", arc)
+                        .attr('class', "gauge-section-" + (sectionIndex + 1))
+                        .attr("fill", section)
+            });
+
+            // If label
+            if (this.props.label) {
+                // Colors
+                let color = d3.scale.linear()
+                        .domain([0, 50, 100])
+                        .range(sections);
+
+                // Style
+                let text = meter.append("text")
+                        .attr("class", "gauge-label")
+                        .attr("text-anchor", "middle")
+                        .attr("dy", "1.8em")
+                        .style("fill", () => { return color(value) });
+
+                text.text(value + '%');
+            }
+
+            // Draw and animate arrow with default or provided styles
+            this._drawArrow(meter, 0, arrow.color, arrow.width, arrow.height);
+            this._animateArrow(meter, value * 0.01, arrow.width, arrow.height);
+
+            meter.transition();
+
+            return meter;
+        },
+
+        _animateArrow(el, perc, width, height) {
+            var scope = this;
+            return el.transition()
+                    .delay(500)
+                    .ease('elastic')
+                    .duration(4000)
+                    .selectAll('.gauge-arrow')
+                    .tween('progress', () => {
+                        return function(percentOfPercent) {
+                            return d3.select(this)
+                                    .attr('d', scope._mkCmd(width, height, percentOfPercent * perc));
+                        };
+                    });
+        },
+
+        _drawArrow(el, perc, color, width, height) {
+            el.append('circle')
+                    .attr('class', 'gauge-arrow-center')
+                    .attr('cx', 0).attr('cy', 0)
+                    .attr("fill", color)
+                    .attr('r', width);
+
+            return el.append('path')
+                    .attr('class', 'gauge-arrow')
+                    .attr("fill", color)
+                    .attr('d', this._mkCmd(width, height, perc));
+        },
+
+        _mkCmd(width, height, perc) {
+            let centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+
+            thetaRad = this._percToRad(perc / 2);
+            centerX = 0;
+            centerY = 0;
+            topX = centerX - height * Math.cos(thetaRad);
+            topY = centerY - height * Math.sin(thetaRad);
+            leftX = centerX - width * Math.cos(thetaRad - Math.PI / 2);
+            leftY = centerY - width * Math.sin(thetaRad - Math.PI / 2);
+            rightX = centerX - width * Math.cos(thetaRad + Math.PI / 2);
+            rightY = centerY - width * Math.sin(thetaRad + Math.PI / 2);
+            return "M " + leftX + " " + leftY + " L " + topX + " " + topY + " L " + rightX + " " + rightY;
+        },
+
+        _percToDeg(perc) {
+            return perc * 360;
+        },
+
+        _percToRad(perc) {
+            return this._degToRad(this._percToDeg(perc));
+        },
+
+        _degToRad(deg) {
+            return deg * Math.PI / 180.5;
+        },
+
+        _deg2rad(deg) {
+            return deg / 180 * Math.PI;
+        }
+    })
+
+
+    React.render(<ExampleApp />, document.getElementById('example'));
+</script>
+</body>
 </html>
