@@ -12,6 +12,7 @@
     </script>
     <style>
         a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,div,dl,dt,em,fieldset,form,h1,h2,h3,h4,h5,h6,html,iframe,img,ins,kbd,label,legend,li,object,ol,p,pre,q,s,samp,small,span,strike,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,ul,var{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-family:inherit;font-size:100%;vertical-align:baseline}caption,table,td,th{vertical-align:middle}body{line-height:1;color:#000;background:#efefef}ol,ul{list-style:none}table{border-collapse:separate;border-spacing:0}caption,td,th{text-align:left;font-weight:400}a img{border:none}#app,body,html{height:100%}#app{display:flex;flex-direction:row;justify-content:flex-start;align-items:stretch}.App{width:100%}.App__title{padding:15px 0 25px;font:400 3rem Roboto,sans-serif;color:#515151;text-shadow:1px 1px 1px #8c8c8c;text-align:center}.App__content{display:flex;flex-direction:row;justify-content:space-around;align-items:center;width:100%;margin:0 0 20px;padding:30px 30px 50px;box-sizing:border-box;background:#fff;box-shadow:0 0 2px 0 #9c9c9c}.gauge{position:relative;top:-5px;padding:0;margin:0}.gauge-label{position:relative;top:12px;padding:0 10px 0 0;font:400 20px/1 Roboto,sans-serif;text-align:center}.gauge-el svg{overflow:visible!important}
+        .run-test-btn {display:flex;height:30px;margin:auto;padding:0 50px;line-height:30px;box-shadow:1px 1px 1px #ccc;}
     </style>
 </head>
 <body>
@@ -66,7 +67,7 @@
                         </div>
                     </div>
 
-                     <button onClick={this.runSpeedTest}>Run speed tests</button>
+                     <button className="run-test-btn" onClick={this.runSpeedTest}>Run speed tests</button>
                 </section>
             );
         }
