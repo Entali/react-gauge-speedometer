@@ -1,0 +1,143 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+  color: #000;
+  background: #fff;
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+a img {
+  border: none;
+}
+html,
+body,
+#app {
+  height: 100%;
+}
+#app {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+body {
+  background: #efefef;
+}
+.App {
+  width: 100%;
+}
+.App__title {
+  padding: 15px 0 25px;
+  font: 400 3rem 'Roboto', sans-serif;
+  color: #515151;
+  text-shadow: 1px 1px 1px #8c8c8c;
+  text-align: center;
+}
+.App__content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 30px 30px 50px;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 0 2px 0 #9c9c9c;
+}
+.gauge {
+  position: relative;
+  top: -5px;
+  padding: 0;
+  margin: 0;
+}
+.gauge-label {
+  position: relative;
+  top: 12px;
+  padding: 0 10px 0 0;
+  font: 400 20px/1 'Roboto', sans-serif;
+  text-align: center;
+}
+.gauge-el svg {
+  overflow: visible !important;
+}
