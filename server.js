@@ -1,16 +1,15 @@
-import path from 'path';
+var path = require('path');
+var express = require('express');
+var React = require('react');
+var WebpackDevServer = require('webpack-dev-server');
+var debug = require('debug');
+var webpack = require('webpack');
 
-import express from 'express';
-import React from 'react';
-import WebpackDevServer from 'webpack-dev-server';
-import debug from 'debug';
-import webpack from 'webpack';
-
-import Html from './src/core/html';
+var Html = require('./src/core/html');
 
 const app = express();
-
 const statsJsonPath = path.join(__dirname, 'build', '_stats.json');
+
 
 function renderApp(res, assets) {
   const html = React.renderToStaticMarkup(<Html assets={assets}/>);
