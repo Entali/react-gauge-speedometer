@@ -58,7 +58,7 @@ let ArcGauge = React.createClass({
         sectionWidth = this.props.size,
         rotateAngle = .75,
         sectionFill = 1 / sectionsNum / 2,
-        sectionSpaces = 0.08,
+        sectionSpaces = 0.05,
         legend = this.props.legend,
         arrow = this.props.arrow || this.state.arrow,
         arcStart, arcEnd, padStart, padEnd;
@@ -80,6 +80,7 @@ let ArcGauge = React.createClass({
 
     // Generate path
     sections.map((section, sectionIndex) => {
+      let index = sectionIndex + 1;
       arcStart = this._percToRad(rotateAngle);
       arcEnd = arcStart + this._percToRad(sectionFill);
       rotateAngle += sectionFill;
@@ -94,27 +95,30 @@ let ArcGauge = React.createClass({
 
       meter.append("path")
         .attr("d", arc)
-        .attr("id", "gauge-path-" + (sectionIndex + 1))
-        .attr('class', "gauge-section-" + (sectionIndex + 1))
+        .attr("id", "gauge-path-" + index)
+        .attr('class', "gauge-section-" + index)
         .attr("fill", section);
 
-      let text = meter.append("text")
-          .attr("x", 10)
-          .attr("dy", 35);
+      // Legend
+      if (legend) {
+        let text = meter.append("text")
+            .attr("x", 10)
+            .attr("dy", 35);
 
-      text.append("textPath")
-          .attr("class","gauge-text")
-          .attr("xlink:href","#gauge-path-" + (sectionIndex + 1))
-          .text(this.props.legend[sectionIndex]);
+        text.append("textPath")
+            .attr("class","gauge-text")
+            .attr("xlink:href","#gauge-path-" + index)
+            .text(legend[sectionIndex]);
+      }
     });
 
-    // If label
+    // Label
     if (this.props.label) {
       let text = meter.append("text")
           .attr("class", "gauge-label")
           .attr("text-anchor", "middle")
           .attr("dy", "1.8em")
-          .attr("fill", "#828282");
+          .attr("fill", "#515151");
 
       text.text(value + '%');
     }
