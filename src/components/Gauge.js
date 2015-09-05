@@ -10,7 +10,8 @@ let Gauge = React.createClass({
       radius: 85,
       sections: ['#ccc', '#999', '#444'],
       arrow: null,
-      label: null
+      label: null,
+      legend: null
     }
   },
 
@@ -20,7 +21,8 @@ let Gauge = React.createClass({
     size: React.PropTypes.number,
     radius: React.PropTypes.number,
     arrow: React.PropTypes.object,
-    label: React.PropTypes.string
+    label: React.PropTypes.string,
+    legend: React.PropTypes.any
   },
 
   getInitialState() {
@@ -60,6 +62,7 @@ let Gauge = React.createClass({
                     sections={this.props.sections}
                     arrow={this.props.arrow}
                     label={this.props.label}
+                    legend={this.props.legend}
                     width={this.state.width}/>
         </section>
     );

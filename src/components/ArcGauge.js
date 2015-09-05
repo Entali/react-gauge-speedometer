@@ -16,7 +16,8 @@ let ArcGauge = React.createClass({
     radius: React.PropTypes.number,
     sections: React.PropTypes.any,
     arrow: React.PropTypes.object,
-    label: React.PropTypes.string
+    label: React.PropTypes.string,
+    legend: React.PropTypes.any
   },
 
   getInitialState() {
@@ -58,6 +59,7 @@ let ArcGauge = React.createClass({
         rotateAngle = .75,
         sectionFill = 1 / sectionsNum / 2,
         sectionSpaces = 0.08,
+        legend = this.props.legend,
         arrow = this.props.arrow || this.state.arrow,
         arcStart, arcEnd, padStart, padEnd;
 
@@ -91,24 +93,28 @@ let ArcGauge = React.createClass({
           .endAngle(arcEnd - padEnd);
 
       meter.append("path")
-          .attr("d", arc)
-          .attr('class', "gauge-section-" + (sectionIndex + 1))
-          .attr("fill", section)
+        .attr("d", arc)
+        .attr("id", "gauge-path-" + (sectionIndex + 1))
+        .attr('class', "gauge-section-" + (sectionIndex + 1))
+        .attr("fill", section);
+
+      let text = meter.append("text")
+          .attr("x", 10)
+          .attr("dy", 35);
+
+      text.append("textPath")
+          .attr("class","gauge-text")
+          .attr("xlink:href","#gauge-path-" + (sectionIndex + 1))
+          .text(this.props.legend[sectionIndex]);
     });
 
     // If label
     if (this.props.label) {
-      // Colors
-      let color = d3.scale.linear()
-          .domain([0, 50, 100])
-          .range(sections);
-
-      // Style
       let text = meter.append("text")
           .attr("class", "gauge-label")
           .attr("text-anchor", "middle")
           .attr("dy", "1.8em")
-          .style("fill", () => { return color(value) });
+          .attr("fill", "#828282");
 
       text.text(value + '%');
     }
