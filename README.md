@@ -12,4 +12,4 @@
 
     npm run dev
 
-![react gauge 2015-09-04 16-24-47](https://cloud.githubusercontent.com/assets/2760408/9684649/8e50a5d4-5321-11e5-8e0f-9e193259903c.jpg)
+![react gauges-3](https://cloud.githubusercontent.com/assets/2760408/9699128/e4bdaef4-53de-11e5-8d0d-881369726c25.jpg)
