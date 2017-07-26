@@ -5,7 +5,7 @@
     "dev": "DEBUG=React-starter-kit:* nodemon -w server.js -w webpack.config.js -w src/html.js server.js",
     "build": "webpack -c"
   },
-  "author": "Nata Entali <entalila@icloud.com>",
+  "author": "Nata Entali <nata.entali@gmail.com>",
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
     "babel": "^5.5.6",
