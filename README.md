@@ -1,7 +1,5 @@
 # React gauge speedometer
 
-[DEMO](http://entali.github.io/react-gauge-speedometer/)
-
 ## Build
 
     npm install || npm i
